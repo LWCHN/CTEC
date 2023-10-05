@@ -1,0 +1,7 @@
+File,macaque_bc
+ITER_NUMBER,20
+Acc_Name,ARI,NMI,resolution,time_consuming
+Acc_leiden_labels,0.7866,0.8723,1.0,0
+Acc_desc_labels,0.8833,0.924,1.0,0
+Acc_CTEC_OB,0.9063,0.917,NA ,32.781
+

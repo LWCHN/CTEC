@@ -1,0 +1,26 @@
+,0,1,2,3,4,5
+macaque_bc,method_name,ARI,NMI,resolution,time,data_name
+macaque_bc_LEIDEN,Acc_LEIDEN,0.7866,0.8723,1.0,1.68,
+macaque_bc_DESC,Acc_DESC,0.8833,0.924,1.0,155.656,
+macaque_bc_CTECOB,Acc_CTEC_OB,0.9063,0.917,NA ,32.781,
+macaque_bc_CTECDB,Acc_CTEC_DB,0.9458,0.9422,NA ,0.32,
+human_pbmc_GSE96583,method_name,ARI,NMI,resolution,time,data_name
+human_pbmc_GSE96583_LEIDEN,Acc_LEIDEN,0.5056,0.6433,1.0,2.86,
+human_pbmc_GSE96583_DESC,Acc_DESC,0.477,0.6598,1.0,169.645,
+human_pbmc_GSE96583_CTECOB,Acc_CTEC_OB,0.629,0.6664,NA ,21.62,
+human_pbmc_GSE96583_CTECDB,Acc_CTEC_DB,0.6624,0.6929,NA ,0.24,
+mouse_cortex_SCP425,method_name,ARI,NMI,resolution,time,data_name
+mouse_cortex_SCP425_LEIDEN,Acc_LEIDEN,0.2141,0.5161,1.0,0.66,
+mouse_cortex_SCP425_DESC,Acc_DESC,0.2636,0.5532,1.0,94.964,
+mouse_cortex_SCP425_CTECOB,Acc_CTEC_OB,0.4547,0.5754,NA ,18.549,
+mouse_cortex_SCP425_CTECDB,Acc_CTEC_DB,0.5317,0.6272,NA ,0.28,
+human_pancreas,method_name,ARI,NMI,resolution,time,data_name
+human_pancreas_LEIDEN,Acc_LEIDEN,0.4252,0.7376,1.0,0.21,
+human_pancreas_DESC,Acc_DESC,0.6011,0.8033,1.0,53.952,
+human_pancreas_CTECOB,Acc_CTEC_OB,0.5896,0.7954,NA ,6.59,
+human_pancreas_CTECDB,Acc_CTEC_DB,0.6778,0.8385,NA ,0.34,
+paul15,method_name,ARI,NMI,resolution,time,data_name
+paul15_LEIDEN,Acc_LEIDEN,0.3187,0.5671,1.0,0.18,
+paul15_DESC,Acc_DESC,0.519,0.5939,1.0,24.29,
+paul15_CTECOB,Acc_CTEC_OB,0.523,0.5862,NA ,3.12,
+paul15_CTECDB,Acc_CTEC_DB,0.6529,0.6334,NA ,0.2,
