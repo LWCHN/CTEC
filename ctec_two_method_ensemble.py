@@ -116,7 +116,7 @@ def step1(i):
     
     #Step 1: save adata_pre
     PATH_adata_pre = os.path.join(save_path, data_name+'_adata_pre.h5ad')
-    adata_pre.write_h5ad(PATH_adata_pre)
+    adata_pre.write_h5ad(PATH_adata_pre,compression="gzip")
     t_end=time.time()-t0
     save_time_to_txt(PATH_adata_pre+'_TIME_step1.txt',t_end)
 
@@ -149,7 +149,7 @@ def step2(i):
     sc.pp.neighbors(adata_pre, n_neighbors=10, use_rep="X_pca", random_state=1) # use default paras
     
     PATH_adata_for_leiden_desc = os.path.join(save_path, data_name+'_adata_for_leiden_desc.h5ad')
-    adata_pre.write_h5ad(PATH_adata_for_leiden_desc)
+    adata_pre.write_h5ad(PATH_adata_for_leiden_desc,compression="gzip")
 
     adata_pre_obsm_X_pca = adata_pre.obsm['X_pca']
     np.save(os.path.join(save_path, data_name+'_adata_pre_obsm_X_pca.npy'),adata_pre_obsm_X_pca)
@@ -620,7 +620,8 @@ if __name__ == "__main__":
     parser.add_argument('--exp_id', type=str, default='0', required=False, help='experiment id')
     args = parser.parse_args()    
     EXP = args.exp_id
-    DATASET_NUM_LIST = [args.dataset_id]
+    # DATASET_NUM_LIST = [args.dataset_id]
+    DATASET_NUM_LIST = [1,2,3,4,5]
     ## manage result save path:
     save_path = os.path.join(SAVE_PATH,'Result_Ensemble_Two_Method_'+str(EXP))
     try:
@@ -640,5 +641,5 @@ if __name__ == "__main__":
         print('')
         
 
-    # Make_Acc_Table(DATASET_NUM_LIST)
+    Make_Acc_Table(DATASET_NUM_LIST)
 
