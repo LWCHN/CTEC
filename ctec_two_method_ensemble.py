@@ -620,8 +620,7 @@ if __name__ == "__main__":
     parser.add_argument('--exp_id', type=str, default='0', required=False, help='experiment id')
     args = parser.parse_args()    
     EXP = args.exp_id
-    # DATASET_NUM_LIST = [args.dataset_id]
-    DATASET_NUM_LIST = [1,2,3,4,5]
+    DATASET_NUM_LIST = [args.dataset_id]
     ## manage result save path:
     save_path = os.path.join(SAVE_PATH,'Result_Ensemble_Two_Method_'+str(EXP))
     try:
@@ -641,5 +640,5 @@ if __name__ == "__main__":
         print('')
         
 
-    Make_Acc_Table(DATASET_NUM_LIST)
+    # Make_Acc_Table(DATASET_NUM_LIST)
 

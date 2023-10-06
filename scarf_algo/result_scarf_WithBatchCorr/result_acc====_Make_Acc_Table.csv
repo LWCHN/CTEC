@@ -1,0 +1,11 @@
+,0,1,2,3,4
+macaque_bc,method_name,ARI,NMI,resolution,time
+macaque_bc_SCARF,Acc_scarf,0.2082,0.3957,input_class_nums,5.07
+human_pbmc_GSE96583,method_name,ARI,NMI,resolution,time
+human_pbmc_GSE96583_SCARF,Acc_scarf,0.0111,0.0157,input_class_nums,3.236
+mouse_cortex_SCP425,method_name,ARI,NMI,resolution,time
+mouse_cortex_SCP425_SCARF,Acc_scarf,0.2018,0.3338,input_class_nums,1.397
+human_pancreas,method_name,ARI,NMI,resolution,time
+human_pancreas_SCARF,Acc_scarf,0.0167,0.2051,input_class_nums,0.16
+paul15,method_name,ARI,NMI,resolution,time
+paul15_SCARF,Acc_scarf,0.1586,0.4216,input_class_nums,0.33

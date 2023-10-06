@@ -1,0 +1,11 @@
+,,0,1,2,3,4,,,,,,,
+,macaque_bc,method_name,ARI,NMI,resolution,time,,,1,2,3,4,5
+1,macaque_bc_SECUER,Acc_SECUER,0.7799,0.8693,999,4.354,,macaque_bc,macaque_bc_SECUER,human_pbmc_GSE96583_SECUER,mouse_cortex_SCP425_SECUER,human_pancreas_SECUER,paul15_SECUER
+2,human_pbmc_GSE96583_SECUER,Acc_SECUER,0.7021,0.678,999,4.556,,method_name,Acc_SECUER,Acc_SECUER,Acc_SECUER,Acc_SECUER,Acc_SECUER
+3,mouse_cortex_SCP425_SECUER,Acc_SECUER,0.3732,0.5642,999,4.829,,ARI,0.7799,0.7021,0.3732,0.5662,0.285
+4,human_pancreas_SECUER,Acc_SECUER,0.5662,0.7567,999,2.3,,NMI,0.8693,0.678,0.5642,0.7567,0.5465
+5,paul15_SECUER,Acc_SECUER,0.285,0.5465,999,1.45,,resolution,999,999,999,999,999
+,human_pbmc_GSE96583,method_name,ARI,NMI,resolution,time,,time,4.354,4.556,4.829,2.3,1.45
+,mouse_cortex_SCP425,method_name,ARI,NMI,resolution,time,,,,,,,
+,human_pancreas,method_name,ARI,NMI,resolution,time,,,,,,,
+,paul15,method_name,ARI,NMI,resolution,time,,,,,,,
