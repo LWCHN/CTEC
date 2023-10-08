@@ -1,0 +1,7 @@
+,0,1,2,3,4,,,macaque_bc,macaque_bc_SC3S,human_pbmc_GSE96583_SC3S,mouse_cortex_SCP425_SC3S,human_pancreas_SC3S,paul15_SC3S
+macaque_bc,method_name,ARI,NMI,resolution,time,,0,method_name,Acc_sc3s,Acc_sc3s,Acc_sc3s,Acc_sc3s,Acc_sc3s
+macaque_bc_SC3S,Acc_sc3s,0.93,0.9229,input_class_nums,3.717,,1,ARI,0.93,0.7625,0.4326,0.6427,0.3237
+human_pbmc_GSE96583_SC3S,Acc_sc3s,0.7625,0.7131,input_class_nums,2.567,,2,NMI,0.9229,0.7131,0.5506,0.7908,0.5347
+mouse_cortex_SCP425_SC3S,Acc_sc3s,0.4326,0.5506,input_class_nums,0.87,,3,resolution,input_class_nums,input_class_nums,input_class_nums,input_class_nums,input_class_nums
+human_pancreas_SC3S,Acc_sc3s,0.6427,0.7908,input_class_nums,1.086,,4,time,3.717,2.567,0.87,1.086,0.717
+paul15_SC3S,Acc_sc3s,0.3237,0.5347,input_class_nums,0.717,,,,,,,,
