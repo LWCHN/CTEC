@@ -13,9 +13,9 @@ CTEC single-cell RNA-seq ensemble clustering
 https://drive.google.com/drive/folders/1ZhybTUaBCvIyVY1jiIcIDqTH7SbwXy4Y?usp=drive_link
 
 # Usage
+run ctec_two_method_ensemble.py for two methods ensemble on the benchmark datasets, the Leiden and DESC methods are used by default.
 
-# Example
-
+run ctec_multiple_method_ensemble for multiple methods ensemble on the benchmark datasets.
 
 # Disclaimer
 
