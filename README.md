@@ -17,6 +17,11 @@ run ctec_two_method_ensemble.py for two methods ensemble on the benchmark datase
 
 run ctec_multiple_method_ensemble for multiple methods ensemble on the benchmark datasets.
 
+# Build docker image
+docker build ./ -t ctec:v1
+
+docker run -u root -v $local_path_of_git_repo$:/ctec_work/:rw ctec:v1 bash -c "python /ctec_work/ctec_two_method_ensemble.py"
+
 # Disclaimer
 
 This tool is for research purpose and not approved for clinical use.
