@@ -10,6 +10,8 @@ CTEC single-cell RNA-seq ensemble clustering
 [![scanpy-1.9.5](https://img.shields.io/badge/scanpy-1.9.5-blue)](https://github.com/theislab/scanpy)
 
 # Datasets
+The five benchmark datasets can be download from:
+
 https://drive.google.com/drive/folders/1ZhybTUaBCvIyVY1jiIcIDqTH7SbwXy4Y?usp=drive_link
 
 # Usage
