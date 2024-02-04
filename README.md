@@ -20,6 +20,8 @@ run ctec_multiple_method_ensemble for multiple methods ensemble on the benchmark
 # Build docker image
 docker build ./ -t ctec:v1
 
+docker run -u root -v LOCAL_PATH_OF_GIT_REPO:/ctec_work/:rw ctec:v1 bash -c "python /ctec_work/ctec_two_method_unknown_cluster.py"
+
 docker run -u root -v LOCAL_PATH_OF_GIT_REPO:/ctec_work/:rw ctec:v1 bash -c "python /ctec_work/ctec_two_method_known_cluster.py"
 
 # Disclaimer
