@@ -18,8 +18,15 @@ run ctec_two_method_ensemble.py for two methods ensemble on the benchmark datase
 run ctec_multiple_method_ensemble for multiple methods ensemble on the benchmark datasets.
 
 # Build docker image
+1. How to download/pull CTEC docker image
+The docker image can be downloaded from https://hub.docker.com/r/lwchn/ctec/tags by 
+docker pull lwchn/ctec:v1
+
+2. How to build CTEC docker image
+Alternately, this image can be build by Dockerfile with
 docker build ./ -t ctec:v1
 
+3. How to use CTEC docker image
 docker run -u root -v LOCAL_PATH_OF_GIT_REPO:/ctec_work/:rw ctec:v1 bash -c "python /ctec_work/ctec_two_method_unknown_cluster.py"
 
 docker run -u root -v LOCAL_PATH_OF_GIT_REPO:/ctec_work/:rw ctec:v1 bash -c "python /ctec_work/ctec_two_method_known_cluster.py"
