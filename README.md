@@ -26,10 +26,9 @@ The docker image can be downloaded from https://hub.docker.com/r/lwchn/ctec/tags
 
 docker pull lwchn/ctec:v1
 
-or download tar file of this docker image from google drive: https://drive.google.com/file/d/1uHrfkuHD3Y3CcUW2Gn2TKYei78Yj04sz/view?usp=drive_link
+or download tar file of this docker image from google drive: https://drive.google.com/file/d/1GhPMNpS2YpmrFHCPlm-jcOA5FO4v0RUb/view?usp=drive_link
 
-
-## How to build CTEC docker image
+## How to build by yourself the CTEC docker image
 
 Alternatively, this image can be built by Dockerfile and requirement.txt provided in this reop, with:
 
