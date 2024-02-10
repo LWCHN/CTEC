@@ -15,9 +15,17 @@ The five benchmark datasets can be download from:
 https://drive.google.com/drive/folders/1ZhybTUaBCvIyVY1jiIcIDqTH7SbwXy4Y?usp=drive_link
 
 # Usage
-run ctec_two_method_ensemble.py for two methods ensemble on the benchmark datasets, the Leiden and DESC methods are used by default.
+run
+```
+ctec_two_method_unknown_cluster.py
+```
+for two methods ensemble on the benchmark datasets, the Leiden and DESC methods are used by default.
 
-run ctec_multiple_method_ensemble for multiple methods ensemble on the benchmark datasets.
+run 
+```
+ctec_multiple_method_ensemble.py
+```
+for multiple methods ensemble on the benchmark datasets.
 
 # Build docker image
 ## How to download/pull CTEC docker image
@@ -28,22 +36,20 @@ docker pull lwchn/ctec:v1
 
 or download tar file of this docker image from google drive: https://drive.google.com/file/d/1GhPMNpS2YpmrFHCPlm-jcOA5FO4v0RUb/view?usp=drive_link
 
-## How to build by yourself the CTEC docker image
+## How to build your own CTEC docker image
 
 Alternatively, this image can be built by Dockerfile and requirement.txt provided in this reop, with:
-
+```
 docker build ./ -t ctec:v1
+```
 
 ## How to use CTEC docker image
-
+```
 docker run -u root -v LOCAL_PATH_OF_GIT_REPO:/ctec_work/:rw ctec:v1 bash -c "python /ctec_work/ctec_two_method_unknown_cluster.py"
-
 docker run -u root -v LOCAL_PATH_OF_GIT_REPO:/ctec_work/:rw ctec:v1 bash -c "python /ctec_work/ctec_two_method_known_cluster.py"
-
 docker run -u root -v LOCAL_PATH_OF_GIT_REPO:/ctec_work/:rw ctec:v1 bash -c "python /ctec_work/ctec_multiple_method_ensemble.py"
-
 docker run -u root -v LOCAL_PATH_OF_GIT_REPO:/ctec_work/:rw ctec:v1 bash -c "python /ctec_work/ctec_multiple_method_ensemble_draw_umap.py"
-
+```
 The "LOCAL_PATH_OF_GIT_REPO" should be replaced by local CTEC project path.
 
 # Disclaimer
