@@ -1,7 +1,0 @@
-File,human_pancreas
-ITER_NUMBER,20
-Acc_Name,ARI,NMI,resolution,time_consuming
-Acc_leiden_labels,0.4252,0.7376,1.0,0
-Acc_desc_labels,0.6011,0.8033,1.0,0
-Acc_CTEC_OB,0.5896,0.7954,NA ,6.59
-

@@ -1,7 +1,0 @@
-File,human_pbmc_GSE96583
-ITER_NUMBER,20
-Acc_Name,ARI,NMI,resolution,time_consuming
-Acc_leiden_labels,0.5056,0.6433,1.0,0
-Acc_desc_labels,0.477,0.6598,1.0,0
-Acc_CTEC_DB,0.6624,0.6929,NA ,0.24
-
