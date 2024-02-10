@@ -40,6 +40,10 @@ docker run -u root -v LOCAL_PATH_OF_GIT_REPO:/ctec_work/:rw ctec:v1 bash -c "pyt
 
 docker run -u root -v LOCAL_PATH_OF_GIT_REPO:/ctec_work/:rw ctec:v1 bash -c "python /ctec_work/ctec_two_method_known_cluster.py"
 
+docker run -u root -v LOCAL_PATH_OF_GIT_REPO:/ctec_work/:rw ctec:v1 bash -c "python /ctec_work/ctec_multiple_method_ensemble.py"
+
+docker run -u root -v LOCAL_PATH_OF_GIT_REPO:/ctec_work/:rw ctec:v1 bash -c "python /ctec_work/ctec_multiple_method_ensemble_draw_umap.py"
+
 The "LOCAL_PATH_OF_GIT_REPO" should be replaced by local CTEC project path.
 
 # Disclaimer
