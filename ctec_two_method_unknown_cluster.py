@@ -1,16 +1,8 @@
 # -*- coding: utf-8 -*-
-"""
-docker run --rm -u root -v /Users/leonwang/Documents/learn_build_docker/ctec_with_gt_cluster/ctec_work/:/ctec_work/:rw lwchn/ctec:v1 bash -c "python /ctec_work/ctec_two_method_unknown_cluster.py --dataset_id 0 --exp_id test_docker_v1_unknown_cluster
-
-
-docker run --rm -u root -v /Users/leonwang/Documents/learn_build_docker/ctec_with_gt_cluster/ctec_work/:/ctec_work/:rw lwchn/ctec:v1 bash -c "python /ctec_work/Make_Acc_Table.py --result_path Result_Ensemble_Two_Method_Exp_test_docker_v1_unknown_cluster"
-"""
 
 ## import system file
 from operator import is_not
 import os
-# os.environ['PYTHONHASHSEED'] = '0'
-# os.environ["PYTHONIOENCODING"] = "utf-8"
 import scanpy as sc
 import numpy as np
 import time
@@ -36,8 +28,6 @@ from util_steps import *
 #-------------------------------------------
 # step 1: pre process
 #-------------------------------------------
-# for i in range(0,len(DATASET_NUM_LIST)):
-
 def step1(i,N_HIGH_VAR_TEST):
     DATASET_NUM = DATASET_NUM_LIST[i]
     print('\n\n','='*100)
@@ -97,8 +87,6 @@ def step1(i,N_HIGH_VAR_TEST):
 #-------------------------------------------
 # step 2: calc PCA
 #-------------------------------------------
-# for i in range(0,len(DATASET_NUM_LIST)):
-
 def step2(i,n_neighbors):
     DATASET_NUM = DATASET_NUM_LIST[i]
 
@@ -143,7 +131,6 @@ def step2(i,n_neighbors):
 #-------------------------------------------
 # step 3: Leiden algo
 #-------------------------------------------
-# for i in range(0,len(DATASET_NUM_LIST)):
 def step3(i):
     DATASET_NUM = DATASET_NUM_LIST[i]
 
@@ -161,26 +148,35 @@ def step3(i):
     t_start_dataset = time.time()
 
     #Step 3: calc pure leiden
-    PATH_adata_for_leiden_desc = os.path.join(save_path, data_name+'_adata_for_leiden_desc.h5ad')
-    adata_for_leiden = sc.read(PATH_adata_for_leiden_desc)
-    if GTname is not None:
-        df_GT = adata_for_leiden.obs[GTname].astype('category').to_frame()
+    if base_method_result_path is None:
+        # re-calculate Leiden result
+        PATH_adata_for_leiden_desc = os.path.join(save_path, data_name+'_adata_for_leiden_desc.h5ad')
+        adata_for_leiden = sc.read(PATH_adata_for_leiden_desc)
+        if GTname is not None:
+            df_GT = adata_for_leiden.obs[GTname].astype('category').to_frame()
 
-    if res_leiden is None:
-        res_leiden = find_resolution_leiden(adata_for_leiden, class_nums)
+        if res_leiden is None:
+            res_leiden = find_resolution_leiden(adata_for_leiden, class_nums)
 
-    print('\nres_leiden=',res_leiden)
-    t0=time.time()
-    sc.tl.leiden(adata_for_leiden,res_leiden)
-    time_leiden=round(time.time()-t0,3)
-    leiden_labels_df = adata_for_leiden.obs['leiden'].astype('category').to_frame()
-    leiden_labels_df.rename(columns = {'leiden':'leiden_labels'}, inplace = True)
-    del adata_for_leiden
+        print('\nres_leiden=',res_leiden)
+        t0=time.time()
+        sc.tl.leiden(adata_for_leiden,res_leiden)
+        time_leiden=round(time.time()-t0,3)
+        leiden_labels_df = adata_for_leiden.obs['leiden'].astype('category').to_frame()
+        leiden_labels_df.rename(columns = {'leiden':'leiden_labels'}, inplace = True)
+        del adata_for_leiden
+    else:
+        leiden_labels_df = pd.read_csv(os.path.join(base_method_result_path,data_name+'_leiden_labels_df.csv'),index_col=0)
+        df_GT = pd.read_csv(os.path.join(base_method_result_path,data_name+'_ground_truth_df.csv'),index_col=0)
+        time_leiden = 'na'
+
 
     PATH_leiden_labels_df = os.path.join(save_path, data_name+'_leiden_labels_df.csv')
     leiden_labels_df.to_csv(PATH_leiden_labels_df) 
     save_time_to_txt(PATH_leiden_labels_df+'_TIME_step3.txt',time_leiden)
     
+
+
 
     ## [] calc acc
     if GTname is not None:
@@ -198,9 +194,7 @@ def step3(i):
 
 #-------------------------------------------
 # step 4: DESC algo
-#-------------------------------------------
-# for i in range(0,len(DATASET_NUM_LIST)):
-
+#------------------------------------------
 def step4(i,n_neighbors):
     DATASET_NUM = DATASET_NUM_LIST[i]
     print('DATASET_NUM=',DATASET_NUM,', EXP=',EXP)
@@ -218,36 +212,40 @@ def step4(i,n_neighbors):
     print('='*100)
 
     ## Step 4: DESC
-    PATH_adata_for_leiden_desc = os.path.join(save_path, data_name+'_adata_for_leiden_desc.h5ad')
-    adata_for_desc = sc.read(PATH_adata_for_leiden_desc)
-    if GTname is not None:
-        # df_GT = adata_for_desc.obs[GTname].astype('category').to_frame()
-        df_GT = adata_for_desc.obs[GTname].astype('category').to_frame()
+    if base_method_result_path is None:
+        PATH_adata_for_leiden_desc = os.path.join(save_path, data_name+'_adata_for_leiden_desc.h5ad')
+        adata_for_desc = sc.read(PATH_adata_for_leiden_desc)
+        if GTname is not None:
+            # df_GT = adata_for_desc.obs[GTname].astype('category').to_frame()
+            df_GT = adata_for_desc.obs[GTname].astype('category').to_frame()
 
+        ## part 3: DESC result
+        cpu_cores=16
+        save_path_desc = os.path.join(save_path,data_name+'_desc')
+        try:
+            os.mkdir(save_path_desc)
+        except:
+            pass
+        t0=time.time()
+        
 
-    ## part 3: DESC result
-    cpu_cores=4
-    save_path_desc = os.path.join(save_path,data_name+'_desc')
-    try:
-        os.mkdir(save_path_desc)
-    except:
-        pass
-    t0=time.time()
-    
+        if res_louvain is None:
+            res_louvain, _ = find_resolution_louvain(adata_for_desc, class_nums,n_neighbors=n_neighbors)
 
-    if res_louvain is None:
-        res_louvain, _ = find_resolution_louvain(adata_for_desc, class_nums,n_neighbors=n_neighbors)
+        if adata_for_desc.n_obs <10000: #dataset cells nbr smaller than 10000 cells
+            batch_size = 256
+        else:
+            batch_size = 1024
+        print('batch_size = ',batch_size)
 
-    if adata_for_desc.n_obs <10000: #dataset cells nbr smaller than 10000 cells
-        batch_size = 256
+        desc_labels_df, res_desc = algo_DESC(adata_for_desc,FIND_RESO = False, res_lou=res_louvain, class_nums=class_nums,num_Cores=cpu_cores,save_path = save_path_desc,use_ae_weights=False, use_GPU=False,batch_size=batch_size)
+        del adata_for_desc
+        time_desc=round(time.time()-t0,3)
     else:
-        batch_size = 1024
-    print('batch_size = ',batch_size)
-
-    desc_labels_df, res_desc = algo_DESC(adata_for_desc,FIND_RESO = False, res_lou=res_louvain, class_nums=class_nums,num_Cores=cpu_cores,save_path = save_path_desc,use_ae_weights=False, use_GPU=False,batch_size=batch_size)
-    del adata_for_desc
-    time_desc=round(time.time()-t0,3)
-
+        desc_labels_df = pd.read_csv(os.path.join(base_method_result_path, data_name+'_desc_labels_df.csv'),index_col=0)
+        df_GT = pd.read_csv(os.path.join(base_method_result_path,data_name+'_ground_truth_df.csv'),index_col=0)
+        res_desc = res_louvain
+        time_desc = 'na'
 
     PATH_desc_labels_df = os.path.join(save_path, data_name+'_desc_labels_df.csv')
     desc_labels_df.to_csv(PATH_desc_labels_df) 
@@ -270,8 +268,6 @@ def step4(i,n_neighbors):
 #-------------------------------------------
 # step 5: CTEC-DB
 #-------------------------------------------
-# for i in range(0,len(DATASET_NUM_LIST)):
-
 def step5(i):
     DATASET_NUM = DATASET_NUM_LIST[i]
 
@@ -290,7 +286,7 @@ def step5(i):
 
 
     ## step 5: CTEC-DB
-    print('CTEC_DB==1:')
+    print('CTEC_DB')
     ## part 4: CTEC_DB
     algo_name = ['leiden_labels','desc_labels']
     algo_res  = [0,0]
@@ -333,7 +329,12 @@ def step5(i):
     try:
         if GTname is not None:
             PATH_ground_truth_df = os.path.join(save_path, data_name+'_ground_truth_df.csv')
-            ground_truth_df = pd.read_csv(PATH_ground_truth_df,index_col=0) 
+
+            if base_method_result_path is None:
+                ground_truth_df = pd.read_csv(PATH_ground_truth_df,index_col=0)
+            else:
+                ground_truth_df = pd.read_csv(os.path.join(base_method_result_path,data_name+'_ground_truth_df.csv'),index_col=0)
+
             # ground_truth_df = ground_truth_df.set_index(keys = 'index')
         ## [] calc acc
         DF_FOR_ACC1 = pd.concat([ctec_db_labels_df, ground_truth_df], axis=1, join="inner")
@@ -343,20 +344,17 @@ def step5(i):
         print('\n---- Summary ----')
         DF_FOR_ACC2 = pd.concat([leiden_labels_df, ground_truth_df], axis=1, join="inner")
         acc_algo1, acc_results_name = evaluate_df(DF_FOR_ACC2,algo_name[0],GTname)
-        print('___acc: ',algo_name[0])
-        print(acc_results_name,acc_algo1)
+        print(acc_results_name,acc_algo1,"for algorithm Leiden")
         # [print(see_info) for see_info in (acc_results_name,acc_algo1)]
         
         DF_FOR_ACC3 = pd.concat([desc_labels_df, ground_truth_df], axis=1, join="inner")
         acc_algo2, acc_results_name = evaluate_df(DF_FOR_ACC3,algo_name[1],GTname)
-        print('___acc: ',algo_name[1])
         # [print(see_info) for see_info in (acc_results_name,acc_algo2)]
-        print(acc_results_name,acc_algo2)
+        print(acc_results_name,acc_algo2,"for algorithm DESC")
 
         acc_ctec_db, acc_results_name = evaluate_df(DF_FOR_ACC1,'ctec_db_labels',GTname)
-        print('___acc: ctec_db_labels')
         # [print(see_info) for see_info in (acc_results_name,acc_ctec_db)]
-        print(acc_results_name,acc_ctec_db)
+        print(acc_results_name,acc_ctec_db,"for algorithm: CTEC-DB")
         
         result_acc_path = os.path.join(save_path,'result_acc=='+data_name+'==_CTECDB.csv')
         with open(result_acc_path  ,'a+') as f:
@@ -368,14 +366,14 @@ def step5(i):
             f.write('Acc_CTEC_DB,'+calc_acc.list2str(acc_ctec_db)+','+'NA ,'+str(time_ctec_db)+'\n')
             f.write('\n')
     except:
+        print("No ground truth for this dataset")
         pass
+
 
 
 #-------------------------------------------
 # step 6: CTEC-OB
 #-------------------------------------------
-# for i in range(0,len(DATASET_NUM_LIST)):
-
 def step6(i):
     ## part 1: read and preprocesing
     #[1.1 read data]
@@ -390,7 +388,7 @@ def step6(i):
 
 
     ## step 6: CTEC-OB
-    print('CTEC_OB==1:')
+    print('CTEC_OB:')
     algo_name = ['leiden_labels','desc_labels']
     algo_res  = [0,0]
     algo_time = [0,0]
@@ -410,7 +408,10 @@ def step6(i):
     # desc_labels_df = desc_labels_df.set_index(keys = 'index') 
     
     ## load PCA
-    PATH_adata_PCA = os.path.join(save_path, data_name+'_adata_pre_obsm_X_pca.npy')
+    if base_method_result_path is None:
+        PATH_adata_PCA = os.path.join(save_path, data_name+'_adata_pre_obsm_X_pca.npy')
+    else:
+        PATH_adata_PCA = os.path.join(base_method_result_path, data_name+'_adata_pre_obsm_X_pca.npy')
     adata_pre_obsm_X_pca = np.load(PATH_adata_PCA)
 
     #the input dataframe
@@ -433,8 +434,12 @@ def step6(i):
     try:
         if GTname is not None:
             PATH_ground_truth_df = os.path.join(save_path, data_name+'_ground_truth_df.csv')
-            ground_truth_df = pd.read_csv(PATH_ground_truth_df,index_col=0) 
-            # ground_truth_df = ground_truth_df.set_index(keys = 'index')
+            if base_method_result_path is None:
+                ground_truth_df = pd.read_csv(PATH_ground_truth_df,index_col=0)
+                # ground_truth_df = ground_truth_df.set_index(keys = 'index')
+            else:
+                ground_truth_df = pd.read_csv(os.path.join(base_method_result_path,data_name+'_ground_truth_df.csv'),index_col=0)
+                
 
         ## [] calc acc
         DF_FOR_ACC1 = pd.concat([ctec_ob_labels_df, ground_truth_df], axis=1, join="inner")
@@ -444,18 +449,14 @@ def step6(i):
         print('\n---- Summary ----')
         DF_FOR_ACC2 = pd.concat([leiden_labels_df, ground_truth_df], axis=1, join="inner")
         acc_algo1, acc_results_name = evaluate_df(DF_FOR_ACC2,algo_name[0],GTname)
-        print('___acc: ',algo_name[0])
-        print(acc_results_name,acc_algo1)
+        print(acc_results_name,acc_algo1,"for algorithm Leiden")
 
-        
         DF_FOR_ACC3 = pd.concat([desc_labels_df, ground_truth_df], axis=1, join="inner")
         acc_algo2, acc_results_name = evaluate_df(DF_FOR_ACC3,algo_name[1],GTname)
-        print('___acc: ',algo_name[1])
-        print(acc_results_name,acc_algo2)
+        print(acc_results_name,acc_algo2,"for algorithm DESC")
 
         acc_ctec_ob, acc_results_name = evaluate_df(DF_FOR_ACC1,'ctec_ob_labels',GTname)
-        print('___acc: ctec_ob_labels')
-        print(acc_results_name,acc_ctec_ob)
+        print(acc_results_name,acc_ctec_ob,"for algorithm: CTEC-OB")
         
         result_acc_path = os.path.join(save_path,'result_acc=='+data_name+'==_CTECOB.csv')
         with open(result_acc_path  ,'a+') as f:
@@ -467,6 +468,7 @@ def step6(i):
             f.write('Acc_CTEC_OB,'+calc_acc.list2str(acc_ctec_ob)+','+'NA ,'+str(time_ctec_ob)+'\n')
             f.write('\n')
     except:
+        print("No ground truth for this dataset")
         pass
 
 
@@ -474,7 +476,15 @@ def step6(i):
 #-------------------------------------------
 # step 7: draw umap
 #-------------------------------------------
-# for i in range(0,len(DATASET_NUM_LIST)):
+def process_nan(adata,df0,name):
+    adata.obs[name] = [np.nan]* adata.n_obs
+    df1 = pd.DataFrame(adata.obs[name]) # np.nan
+    df2 = pd.DataFrame(df0[name])
+    df1[name] = df1[name].fillna(df2[name]) # np.nan
+    # print(df1[name].isna().sum())
+    adata.obs[name] =df1[name]
+    adata_sub = adata[adata.obs[name]> -1]
+    return adata_sub
 
 def step7(i):
     DATASET_NUM = DATASET_NUM_LIST[i]
@@ -491,8 +501,6 @@ def step7(i):
     FIG_DPI = 300
     t0=time.time()
     
-
-
 
     ## part 1: read and preprocesing
     #[1.1 read data]
@@ -535,6 +543,9 @@ def step7(i):
     save_name = data_name
     SAVE_PDF = 1
 
+    if int(adata.n_obs) != int(leiden_labels_df.shape[0]):
+        adata = process_nan(adata,leiden_labels_df,'leiden_labels')
+
     adata.obs['leiden_labels'] = pd.Categorical(leiden_labels_df['leiden_labels'])
     adata.obs['desc_labels'] = pd.Categorical(desc_labels_df['desc_labels'])
     adata.obs['ctec_db_labels']  = pd.Categorical(ctec_db_labels_df['ctec_db_labels'])
@@ -551,16 +562,16 @@ def step7(i):
         except:
             adata.obs[plot_showname[i]] = adata.obs[plot_obsname[i]].astype(str)
 
-        print('plot_cluster[i] = ',plot_obsname[i])
-        tmp1 = list(set(list(adata.obs[plot_obsname[i]])))
-        tmp2 = list(set(list(adata.obs[plot_showname[i]])))
-        try:
-            tmp1.sort()
-            tmp2.sort()
-        except:
-            pass
-        print('tmp1 = ',tmp1)
-        print('tmp2 = ',tmp2)
+        # print('plot_cluster[i] = ',plot_obsname[i])
+        # tmp1 = list(set(list(adata.obs[plot_obsname[i]])))
+        # tmp2 = list(set(list(adata.obs[plot_showname[i]])))
+        # try:
+        #     tmp1.sort()
+        #     tmp2.sort()
+        # except:
+        #     pass
+        # # print('tmp1 = ',tmp1)
+        # # print('tmp2 = ',tmp2)
 
 
     ## Plot UMAP with same color for different algo
@@ -583,8 +594,8 @@ def step7(i):
                 legend_loc = 'on data',
                 legend_fontsize = 'xx-small',
                 legend_fontoutline=2)
-        plt.savefig(os.path.join(save_path_umap, data_name+'_'+group_name+'_UMAP_5Algo_OnData.pdf'),bbox_inches='tight',dpi=FIG_DPI)
-        plt.savefig(os.path.join(save_path_umap, data_name+'_'+group_name+'_UMAP_5Algo_OnData.png'),bbox_inches='tight',dpi=FIG_DPI)
+        plt.savefig(os.path.join(save_path_umap, data_name+'_'+group_name+'_UMAP_2Algo_OnData.pdf'),bbox_inches='tight',dpi=FIG_DPI)
+        plt.savefig(os.path.join(save_path_umap, data_name+'_'+group_name+'_UMAP_2Algo_OnData.png'),bbox_inches='tight',dpi=FIG_DPI)
     with plt.rc_context():  # Use this to set figure params like size and dpi        
         sc.pl.umap(adata,
                 color=group_name,
@@ -592,8 +603,8 @@ def step7(i):
                 legend_loc = 'right margin',
                 legend_fontsize = 'xx-small',
                 legend_fontoutline=2)
-        plt.savefig(os.path.join(save_path_umap, data_name+'_'+group_name+'_UMAP_5Algo_Right.pdf'),bbox_inches='tight',dpi=FIG_DPI)
-        plt.savefig(os.path.join(save_path_umap, data_name+'_'+group_name+'_UMAP_5Algo_Right.png'),bbox_inches='tight',dpi=FIG_DPI)
+        plt.savefig(os.path.join(save_path_umap, data_name+'_'+group_name+'_UMAP_2Algo_Right.pdf'),bbox_inches='tight',dpi=FIG_DPI)
+        plt.savefig(os.path.join(save_path_umap, data_name+'_'+group_name+'_UMAP_2Algo_Right.png'),bbox_inches='tight',dpi=FIG_DPI)
 
 
     ## for different algorithm result
@@ -613,8 +624,8 @@ def step7(i):
                     legend_loc = 'right margin',
                     legend_fontsize = 'xx-small',
                     legend_fontoutline=2)
-            plt.savefig(os.path.join(save_path_umap, data_name+'_'+group_name+'_UMAP_5Algo_Right.pdf'),bbox_inches='tight',dpi=FIG_DPI)
-            plt.savefig(os.path.join(save_path_umap, data_name+'_'+group_name+'_UMAP_5Algo_Right.png'),bbox_inches='tight',dpi=FIG_DPI)
+            plt.savefig(os.path.join(save_path_umap, data_name+'_'+group_name+'_UMAP_2Algo_Right.pdf'),bbox_inches='tight',dpi=FIG_DPI)
+            plt.savefig(os.path.join(save_path_umap, data_name+'_'+group_name+'_UMAP_2Algo_Right.png'),bbox_inches='tight',dpi=FIG_DPI)
         with plt.rc_context():  # Use this to set figure params like size and dpi        
             sc.pl.umap(adata,
                     color=group_name,
@@ -622,8 +633,8 @@ def step7(i):
                     legend_loc = 'on data',
                     legend_fontsize = 'xx-small',
                     legend_fontoutline=2)
-            plt.savefig(os.path.join(save_path_umap, data_name+'_'+group_name+'_UMAP_5Algo_OnData.pdf'),bbox_inches='tight',dpi=FIG_DPI)
-            plt.savefig(os.path.join(save_path_umap, data_name+'_'+group_name+'_UMAP_5Algo_OnData.png'),bbox_inches='tight',dpi=FIG_DPI)
+            plt.savefig(os.path.join(save_path_umap, data_name+'_'+group_name+'_UMAP_2Algo_OnData.pdf'),bbox_inches='tight',dpi=FIG_DPI)
+            plt.savefig(os.path.join(save_path_umap, data_name+'_'+group_name+'_UMAP_2Algo_OnData.png'),bbox_inches='tight',dpi=FIG_DPI)
         # del colordict_gp
         print('umap image Saved:'+ os.path.join(save_path_umap, data_name+'_'+group_name+'_UMAP_OnData......'))
 
@@ -649,20 +660,23 @@ desc_name_pattern = '_DESC_result_'
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--dataset_id', type=int, default=0, required=False, help='ID of dataset')
-parser.add_argument('--exp_id', type=str, default='_With_KnownCluster', required=False, help='experiment id')
+parser.add_argument('--exp_id', type=str, default='demo_unknown_cluster', required=False, help='experiment id')
+parser.add_argument('--base_method_result_path', type=str, default='./base_method_result/two_method_unknown_cluster', required=False, help='base_method_result_path')
 args = parser.parse_args() 
 EXP = args.exp_id
+base_method_result_path = args.base_method_result_path
+
 
 
 
 if args.dataset_id == 0:
-    DATASET_NUM_LIST = [5,4,3,2,1]
+    DATASET_NUM_LIST = [1,2,3,4,5]
 else:
     DATASET_NUM_LIST = [args.dataset_id]
 HVG_list = [1000]
 N_NEIGHBORS = 10
-for id in range(0,len(DATASET_NUM_LIST)):
 
+for id in range(0,len(DATASET_NUM_LIST)):
     for HVG in HVG_list:
         ## manage result save path:
         save_path = os.path.join(SAVE_PATH,'Result_Ensemble_Two_Method_Exp_'+str(EXP))
@@ -678,4 +692,4 @@ for id in range(0,len(DATASET_NUM_LIST)):
         step4(id,N_NEIGHBORS)
         step5(id)
         step6(id)
-        # step7(id)
+        step7(id)
