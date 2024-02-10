@@ -15,25 +15,32 @@ The five benchmark datasets can be download from:
 https://drive.google.com/drive/folders/1ZhybTUaBCvIyVY1jiIcIDqTH7SbwXy4Y?usp=drive_link
 
 # Usage
-run
 ```
 ctec_two_method_unknown_cluster.py
 ```
-for two methods ensemble on the benchmark datasets, the Leiden and DESC methods are used by default.
+and
+```
+ctec_two_method_known_cluster.py
+```
+are used for two methods ensemble on the benchmark datasets, the Leiden and DESC methods are used by default, with and without knowing the true cluster of datasets.
 
-run 
+
 ```
 ctec_multiple_method_ensemble.py
 ```
-for multiple methods ensemble on the benchmark datasets.
+is used for multiple methods ensemble on the benchmark datasets, and 
+```
+ctec_multiple_method_ensemble_draw_umap.py
+```
+is for umap drawing.
 
 # Build docker image
 ## How to download/pull CTEC docker image
    
 The docker image can be downloaded from https://hub.docker.com/r/lwchn/ctec/tags by 
-
+```
 docker pull lwchn/ctec:v1
-
+```
 or download tar file of this docker image from google drive: https://drive.google.com/file/d/1GhPMNpS2YpmrFHCPlm-jcOA5FO4v0RUb/view?usp=drive_link
 
 ## How to build your own CTEC docker image
@@ -54,7 +61,7 @@ The "LOCAL_PATH_OF_GIT_REPO" should be replaced by local CTEC project path.
 
 # Disclaimer
 
-This tool is for research purpose and not approved for clinical use.
+This tool is for research purposes and not approved for clinical use.
 
 This is not an official Tencent product.
 
