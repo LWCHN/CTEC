@@ -34,18 +34,20 @@ ctec_multiple_method_ensemble_draw_umap.py
 ```
 is for umap drawing.
 
-# Build docker image
-## How to download/pull CTEC docker image
-   
-The docker image can be downloaded from https://hub.docker.com/r/lwchn/ctec/tags by 
+# Build and use CTEC docker image
+The Docker image for the CTEC method can be obtained through different options to ensure accessibility and reproducibility.
+## Option 1
+You can run the command
 ```
 docker pull lwchn/ctec:v1
 ```
-or download tar file of this docker image from google drive: https://drive.google.com/file/d/1GhPMNpS2YpmrFHCPlm-jcOA5FO4v0RUb/view?usp=drive_link
+on your local machine to obtain the image directly from the Docker Hub repository at https://hub.docker.com/r/lwchn/ctec/tags
 
-## How to build your own CTEC docker image
+## Option 2
+Alternatively, you can download the tar file ("ctec_v1.tar") of the Docker image from Google Drive. The file is available at https://drive.google.com/file/d/1GhPMNpS2YpmrFHCPlm-jcOA5FO4v0RUb/view?usp=drive_link
 
-Alternatively, this image can be built by Dockerfile and requirement.txt provided in this reop, with:
+## Option 3
+If you prefer, you can create your own CTEC Docker image by using the provided files on the GitHub repository of CTEC. The "Dockerfile" and "requirements.txt" files can be found at the GitHub repository https://github.com/LWCHN/CTEC, with:
 ```
 docker build ./ -t ctec:v1
 ```
